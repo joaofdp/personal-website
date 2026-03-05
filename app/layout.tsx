@@ -11,6 +11,10 @@ const ibmPlexMono = IBM_Plex_Mono({
 export const metadata: Metadata = {
   title: 'João Passarelli',
   description: 'Personal site',
+  robots: {
+    index: true,
+    noimageindex: true,
+  },
 }
 
 export default function RootLayout({
