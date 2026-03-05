@@ -49,16 +49,10 @@ export default async function HomePage() {
               const annotation = annotations.listening[key]
               return (
                 <div key={key} className="media-item">
-                  {album.imageUrl ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      src={album.imageUrl}
-                      alt={album.name}
-                      className="media-cover"
-                    />
-                  ) : (
-                    <div className="media-cover-placeholder">—</div>
-                  )}
+                  <div
+                    className="media-cover"
+                    style={album.imageUrl ? { backgroundImage: `url(${album.imageUrl})` } : undefined}
+                  />
                   <div className="media-info">
                     <a
                       href={album.url}
@@ -93,16 +87,10 @@ export default async function HomePage() {
               const annotation = annotations.watching[key]
               return (
                 <div key={key} className="media-item">
-                  {film.posterUrl ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      src={film.posterUrl}
-                      alt={film.title}
-                      className="media-cover"
-                    />
-                  ) : (
-                    <div className="media-cover-placeholder">—</div>
-                  )}
+                  <div
+                    className="media-cover"
+                    style={film.posterUrl ? { backgroundImage: `url(${film.posterUrl})` } : undefined}
+                  />
                   <div className="media-info">
                     <a
                       href={film.link}

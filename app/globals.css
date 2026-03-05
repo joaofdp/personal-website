@@ -129,9 +129,11 @@ a:hover {
 .media-cover {
   width: 56px;
   height: 56px;
-  object-fit: cover;
   display: block;
   background-color: var(--border);
+  background-size: cover;
+  background-position: center;
+  flex-shrink: 0;
 }
 
 .media-cover-placeholder {
