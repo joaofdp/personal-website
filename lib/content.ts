@@ -34,7 +34,7 @@ export async function readContent(): Promise<ContentSchema> {
     return readLocal()
   }
 
-  const { list, head } = await import('@vercel/blob')
+  const { list } = await import('@vercel/blob')
 
   try {
     // Find the blob by prefix
@@ -60,7 +60,7 @@ export async function writeContent(data: ContentSchema): Promise<void> {
   const serialized = JSON.stringify(data, null, 2)
 
   await put(BLOB_NAME, serialized, {
-    access: 'public',
+    access: 'private',
     addRandomSuffix: false,
     contentType: 'application/json',
   })
