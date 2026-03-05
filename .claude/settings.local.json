@@ -1,0 +1,31 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node --version)",
+      "Bash(npm --version)",
+      "Bash(npm install)",
+      "Bash(npm info next versions --json)",
+      "Bash(node -e \"const v=require\\(''fs''\\).readFileSync\\(''/dev/stdin'',''utf8''\\); const versions=JSON.parse\\(v\\); const v14=versions.filter\\(x=>x.startsWith\\(''14.''\\)\\).slice\\(-5\\); console.log\\(v14.join\\(''\\\\n''\\)\\)\")",
+      "Bash(npm info next dist-tags)",
+      "Bash(npm audit)",
+      "Bash(node -e \"const p = require\\(''./node_modules/react-dom/package.json''\\); console.log\\(p.version\\)\")",
+      "Bash(node -e \"const p = require\\(''./node_modules/react/package.json''\\); console.log\\(p.version\\)\")",
+      "Bash(node -e \"const p = require\\(''./node_modules/@vercel/blob/package.json''\\); console.log\\(p.version\\)\")",
+      "Bash(node -e \"const b = require\\(''@vercel/blob''\\); console.log\\(Object.keys\\(b\\)\\)\")",
+      "Bash(npx tsc --noEmit)",
+      "Bash(curl -s -o /dev/null -w \"/ -> %{http_code}\\\\n\" http://localhost:3001)",
+      "Bash(curl -s -o /dev/null -w \"/archive -> %{http_code}\\\\n\" http://localhost:3001/archive)",
+      "Bash(curl -s -o /dev/null -w \"/admin -> %{http_code}\\\\n\" http://localhost:3001/admin)",
+      "Bash(curl -s -o /dev/null -w \"/api/lastfm -> %{http_code}\\\\n\" http://localhost:3001/api/lastfm)",
+      "Bash(curl -s -o /dev/null -w \"/api/letterboxd -> %{http_code}\\\\n\" http://localhost:3001/api/letterboxd)",
+      "Bash(pkill -f \"next dev\")",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(gh repo view joaofdp/personal-website)",
+      "Bash(git -C /Users/joaopassarelli/Documents/personal-site status)",
+      "Bash(gh auth status)",
+      "Bash(git init)",
+      "Bash(git add -A)",
+      "Bash(git commit:*)"
+    ]
+  }
+}
