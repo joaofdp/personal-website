@@ -5,6 +5,7 @@ const BLOB_NAME = 'content.json'
 const DEFAULT_CONTENT: ContentSchema = {
   currently: { text: '', updatedAt: new Date().toISOString().split('T')[0] },
   archive: [],
+  snapshots: [],
   annotations: { listening: {}, watching: {} },
 }
 
@@ -14,7 +15,9 @@ async function readLocal(): Promise<ContentSchema> {
   const { join } = await import('path')
   try {
     const raw = await readFile(join(process.cwd(), 'content.json'), 'utf-8')
-    return JSON.parse(raw) as ContentSchema
+    const parsed = JSON.parse(raw) as ContentSchema
+    if (!parsed.snapshots) parsed.snapshots = []
+    return parsed
   } catch {
     return DEFAULT_CONTENT
   }
@@ -44,7 +47,9 @@ export async function readContent(): Promise<ContentSchema> {
     const result = await get(BLOB_NAME, { access: 'private', useCache: false })
     if (!result || !result.stream) return DEFAULT_CONTENT
     const text = await new Response(result.stream).text()
-    return JSON.parse(text) as ContentSchema
+    const parsed = JSON.parse(text) as ContentSchema
+    if (!parsed.snapshots) parsed.snapshots = []
+    return parsed
   } catch {
     return DEFAULT_CONTENT
   }

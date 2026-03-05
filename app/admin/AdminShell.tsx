@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useTransition } from 'react'
-import { verifyPassword, updateCurrently, saveAnnotation } from './actions'
+import { verifyPassword, updateCurrently, saveAnnotation, takeSnapshot } from './actions'
 import type { LastFmAlbum, LetterboxdFilm, ContentSchema } from '@/lib/types'
 
 // ─── Helpers ──────────────────────────────────────────────
@@ -109,6 +109,41 @@ function CurrentlyForm({
   )
 }
 
+// ─── Snapshot section ─────────────────────────────────────
+
+function SnapshotSection({ password }: { password: string }) {
+  const [status, setStatus] = useState<'idle' | 'ok' | 'err'>('idle')
+  const [errMsg, setErrMsg] = useState('')
+  const [pending, startTransition] = useTransition()
+
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    const fd = new FormData(e.currentTarget)
+    startTransition(async () => {
+      const res = await takeSnapshot(fd)
+      if (res.ok) {
+        setStatus('ok')
+      } else {
+        setStatus('err')
+        setErrMsg(res.error ?? 'unknown error')
+      }
+    })
+  }
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input type="hidden" name="password" value={password} />
+      <button type="submit" className="btn btn-snapshot" disabled={pending}>
+        {pending ? 'capturing...' : status === 'ok' ? 'snapshot saved' : 'take snapshot'}
+      </button>
+      <p className="snapshot-hint">
+        captures current state — listening, watching, annotations, and currently text.
+      </p>
+      {status === 'err' && <p className="error-msg">{errMsg}</p>}
+    </form>
+  )
+}
+
 // ─── Annotation form ──────────────────────────────────────
 
 function AnnotationInput({
@@ -188,6 +223,12 @@ function Dashboard({
 
   return (
     <div>
+      {/* Snapshot */}
+      <div className="admin-section admin-section-snapshot">
+        <h2>weekly snapshot</h2>
+        <SnapshotSection password={password} />
+      </div>
+
       {/* Currently */}
       <div className="admin-section">
         <h2>currently</h2>
