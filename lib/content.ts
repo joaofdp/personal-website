@@ -37,18 +37,14 @@ export async function readContent(): Promise<ContentSchema> {
   const { unstable_noStore: noStore } = await import('next/cache')
   noStore()
 
-  const { list } = await import('@vercel/blob')
+  const { get } = await import('@vercel/blob')
 
   try {
-    // Find the blob by prefix
-    const { blobs } = await list({ prefix: BLOB_NAME })
-    const blob = blobs.find((b) => b.pathname === BLOB_NAME)
-    if (!blob) return DEFAULT_CONTENT
-
-    // Fetch the actual content
-    const res = await fetch(blob.url, { cache: 'no-store' })
-    if (!res.ok) return DEFAULT_CONTENT
-    return (await res.json()) as ContentSchema
+    // Fetch directly from origin, bypassing CDN cache
+    const result = await get(BLOB_NAME, { access: 'private', useCache: false })
+    if (!result || !result.stream) return DEFAULT_CONTENT
+    const text = await new Response(result.stream).text()
+    return JSON.parse(text) as ContentSchema
   } catch {
     return DEFAULT_CONTENT
   }
