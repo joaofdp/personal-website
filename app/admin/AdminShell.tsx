@@ -68,6 +68,7 @@ function CurrentlyForm({
 }) {
   const [text, setText] = useState(initialText)
   const [status, setStatus] = useState<'idle' | 'saving' | 'ok' | 'err'>('idle')
+  const [errMsg, setErrMsg] = useState('')
   const [pending, startTransition] = useTransition()
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -76,7 +77,12 @@ function CurrentlyForm({
     const fd = new FormData(e.currentTarget)
     startTransition(async () => {
       const res = await updateCurrently(fd)
-      setStatus(res.ok ? 'ok' : 'err')
+      if (res.ok) {
+        setStatus('ok')
+      } else {
+        setStatus('err')
+        setErrMsg(res.error ?? 'unknown error')
+      }
     })
   }
 
@@ -98,7 +104,7 @@ function CurrentlyForm({
         {pending ? 'saving...' : 'save & archive'}
       </button>
       {status === 'ok' && <p className="success-msg">saved. previous entry archived.</p>}
-      {status === 'err' && <p className="error-msg">failed to save.</p>}
+      {status === 'err' && <p className="error-msg">{errMsg}</p>}
     </form>
   )
 }
@@ -118,6 +124,7 @@ function AnnotationInput({
 }) {
   const [value, setValue] = useState(initialValue)
   const [status, setStatus] = useState<'idle' | 'ok' | 'err'>('idle')
+  const [errMsg, setErrMsg] = useState('')
   const [pending, startTransition] = useTransition()
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -125,7 +132,12 @@ function AnnotationInput({
     const fd = new FormData(e.currentTarget)
     startTransition(async () => {
       const res = await saveAnnotation(fd)
-      setStatus(res.ok ? 'ok' : 'err')
+      if (res.ok) {
+        setStatus('ok')
+      } else {
+        setStatus('err')
+        setErrMsg(res.error ?? 'unknown error')
+      }
     })
   }
 
@@ -145,7 +157,7 @@ function AnnotationInput({
       <button type="submit" className="btn btn-small" disabled={pending}>
         {status === 'ok' ? '✓' : pending ? '...' : 'save'}
       </button>
-      {status === 'err' && <span className="error-msg">err</span>}
+      {status === 'err' && <span className="error-msg" title={errMsg}>err: {errMsg}</span>}
     </form>
   )
 }

@@ -1,6 +1,6 @@
-// v2
 'use server'
 
+// v2
 import { revalidatePath } from 'next/cache'
 import { readContent, writeContent, todayString } from '@/lib/content'
 
@@ -56,7 +56,9 @@ export async function updateCurrently(
 
     return { ok: true }
   } catch (e) {
-    return { ok: false, error: 'Failed to save' }
+    const msg = e instanceof Error ? e.message : String(e)
+    console.error('[updateCurrently]', msg)
+    return { ok: false, error: msg }
   }
 }
 
@@ -88,7 +90,9 @@ export async function saveAnnotation(
     revalidatePath('/')
 
     return { ok: true }
-  } catch {
-    return { ok: false, error: 'Failed to save' }
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : String(e)
+    console.error('[saveAnnotation]', msg)
+    return { ok: false, error: msg }
   }
 }
