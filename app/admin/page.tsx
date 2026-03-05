@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { readContent } from '@/lib/content'
 import AdminShell from './AdminShell'
 
@@ -11,7 +12,7 @@ export default async function AdminPage() {
       <header className="site-header">
         <p className="site-name">João Passarelli</p>
         <nav className="site-nav">
-          <a href="/">currents</a>
+          <Link href="/">currents</Link>
           <a href="/archive">archive</a>
         </nav>
       </header>

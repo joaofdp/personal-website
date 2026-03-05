@@ -25,7 +25,11 @@
       "Bash(gh auth status)",
       "Bash(git init)",
       "Bash(git add -A)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(git branch -m master main)",
+      "Bash(gh repo create joaofdp/personal-website --public --source=. --remote=origin --push)",
+      "Bash(git remote add origin https://github.com/joaofdp/personal-website.git)",
+      "Bash(git push -u origin main)"
     ]
   }
 }
