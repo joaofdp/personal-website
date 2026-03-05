@@ -34,6 +34,9 @@ export async function readContent(): Promise<ContentSchema> {
     return readLocal()
   }
 
+  const { unstable_noStore: noStore } = await import('next/cache')
+  noStore()
+
   const { list } = await import('@vercel/blob')
 
   try {
@@ -62,6 +65,7 @@ export async function writeContent(data: ContentSchema): Promise<void> {
   await put(BLOB_NAME, serialized, {
     access: 'private',
     addRandomSuffix: false,
+    allowOverwrite: true,
     contentType: 'application/json',
   })
 }
