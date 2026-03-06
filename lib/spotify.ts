@@ -37,10 +37,14 @@ export async function getSpotifyAlbumUrl(
   const token = await getAccessToken()
   if (!token) return null
 
-  const q = encodeURIComponent(`album:${album} artist:${artist}`)
+  const params = new URLSearchParams({
+    q: `album:${album} artist:${artist}`,
+    type: 'album',
+    limit: '1',
+  })
   try {
     const res = await fetch(
-      `https://api.spotify.com/v1/search?q=${q}&type=album&limit=1`,
+      `https://api.spotify.com/v1/search?${params}`,
       {
         headers: { Authorization: `Bearer ${token}` },
         next: { revalidate: 3600 },
