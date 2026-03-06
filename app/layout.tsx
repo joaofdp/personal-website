@@ -9,11 +9,16 @@ const ibmPlexMono = IBM_Plex_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'João Passarelli',
-  description: 'Personal site',
+  title: 'joão passarelli',
+  description: 'designer. founder of weird fishes atelier.',
   robots: {
     index: true,
     noimageindex: true,
+  },
+  openGraph: {
+    title: 'joão passarelli',
+    description: 'designer. founder of weird fishes atelier.',
+    url: 'https://joaopassarelli.com',
   },
 }
 
