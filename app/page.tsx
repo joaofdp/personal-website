@@ -32,6 +32,12 @@ export default async function HomePage() {
       {/* Currently */}
       <section className="section">
         <p className="section-label">currently</p>
+        <p className="currently-text">
+          running my own branding atelier,{' '}
+          <a href="https://wfishes.com" target="_blank" rel="noopener noreferrer">
+            weird fishes
+          </a>
+        </p>
         {currently.text ? (
           <>
             <p className="currently-text">{currently.text}</p>
