@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { readContent } from '@/lib/content'
 import { getTopAlbums, albumKey } from '@/lib/lastfm'
 import { getRecentFilms, filmKey } from '@/lib/letterboxd'
+import { getSpotifyAlbumUrl } from '@/lib/spotify'
 
 export const dynamic = 'force-dynamic'
 
@@ -11,6 +12,10 @@ export default async function HomePage() {
     getTopAlbums(),
     getRecentFilms(),
   ])
+
+  const spotifyUrls = await Promise.all(
+    albums.map((a) => getSpotifyAlbumUrl(a.artist, a.name))
+  )
 
   const { currently, annotations } = content
 
@@ -44,9 +49,10 @@ export default async function HomePage() {
           <p className="empty-state">no data.</p>
         ) : (
           <div className="media-list">
-            {albums.map((album) => {
+            {albums.map((album, i) => {
               const key = albumKey(album.artist, album.name)
               const annotation = annotations.listening[key]
+              const albumUrl = spotifyUrls[i] ?? album.url
               return (
                 <div key={key} className="media-item">
                   <div
@@ -55,7 +61,7 @@ export default async function HomePage() {
                   />
                   <div className="media-info">
                     <a
-                      href={album.url}
+                      href={albumUrl}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="media-title"
