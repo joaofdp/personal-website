@@ -35,16 +35,14 @@ export default async function HomePage() {
 
         {/* Pinned entry — hardcoded, not editable */}
         <div className="currently-entry">
-          <div className="currently-meta">
-            <span className="currently-date">2025-08-04</span>
-            <span className="currently-pin">pinned</span>
-          </div>
+          <span className="currently-pin">pinned</span>
           <p className="currently-text">
             running my own branding atelier,{' '}
             <a href="https://wfishes.com" target="_blank" rel="noopener noreferrer">
               weird fishes
             </a>
           </p>
+          <p className="currently-date">2025-08-04</p>
         </div>
 
         <hr className="currently-divider" />
