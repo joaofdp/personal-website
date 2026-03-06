@@ -32,17 +32,28 @@ export default async function HomePage() {
       {/* Currently */}
       <section className="section">
         <p className="section-label">currently</p>
-        <p className="currently-text">
-          running my own branding atelier,{' '}
-          <a href="https://wfishes.com" target="_blank" rel="noopener noreferrer">
-            weird fishes
-          </a>
-        </p>
+
+        {/* Pinned entry — hardcoded, not editable */}
+        <div className="currently-entry">
+          <div className="currently-meta">
+            <span className="currently-date">2025-08-04</span>
+            <span className="currently-pin">pinned</span>
+          </div>
+          <p className="currently-text">
+            running my own branding atelier,{' '}
+            <a href="https://wfishes.com" target="_blank" rel="noopener noreferrer">
+              weird fishes
+            </a>
+          </p>
+        </div>
+
+        <hr className="currently-divider" />
+
         {currently.text ? (
-          <>
+          <div className="currently-entry">
             <p className="currently-text">{currently.text}</p>
             <p className="currently-date">{currently.updatedAt}</p>
-          </>
+          </div>
         ) : (
           <p className="empty-state">nothing here yet.</p>
         )}
