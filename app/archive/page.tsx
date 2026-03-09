@@ -36,29 +36,35 @@ export default async function ArchivePage() {
                 )}
 
                 {snap.listening.length > 0 && (
-                  <div className="snap-covers">
-                    {snap.listening.map((album, i) => (
-                      <a key={`${snap.date}-l-${i}`} href={album.url} target="_blank" rel="noopener noreferrer">
-                        <div
-                          className="snap-cover"
-                          style={album.imageUrl ? { backgroundImage: `url(${album.imageUrl})` } : undefined}
-                        />
-                      </a>
-                    ))}
-                  </div>
+                  <>
+                    <hr className="snap-divider" />
+                    <div className="snap-covers">
+                      {snap.listening.map((album, i) => (
+                        <a key={`${snap.date}-l-${i}`} href={album.url} target="_blank" rel="noopener noreferrer">
+                          <div
+                            className="snap-cover"
+                            style={album.imageUrl ? { backgroundImage: `url(${album.imageUrl})` } : undefined}
+                          />
+                        </a>
+                      ))}
+                    </div>
+                  </>
                 )}
 
                 {snap.watching.length > 0 && (
-                  <div className="snap-covers">
-                    {snap.watching.map((film, i) => (
-                      <a key={`${snap.date}-w-${i}`} href={film.link} target="_blank" rel="noopener noreferrer">
-                        <div
-                          className="snap-cover snap-film-cover"
-                          style={film.posterUrl ? { backgroundImage: `url(${film.posterUrl})` } : undefined}
-                        />
-                      </a>
-                    ))}
-                  </div>
+                  <>
+                    <hr className="snap-divider" />
+                    <div className="snap-covers">
+                      {snap.watching.map((film, i) => (
+                        <a key={`${snap.date}-w-${i}`} href={film.link} target="_blank" rel="noopener noreferrer">
+                          <div
+                            className="snap-cover snap-film-cover"
+                            style={film.posterUrl ? { backgroundImage: `url(${film.posterUrl})` } : undefined}
+                          />
+                        </a>
+                      ))}
+                    </div>
+                  </>
                 )}
               </div>
             ))}

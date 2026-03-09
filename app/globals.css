@@ -280,6 +280,11 @@ a:hover {
   height: 84px;
 }
 
+.snap-divider {
+  border: none;
+  border-top: 1px dashed var(--border);
+  margin: 0.75rem 0 0;
+}
 
 /* ─── Admin ───────────────────────────────────────────────── */
 
