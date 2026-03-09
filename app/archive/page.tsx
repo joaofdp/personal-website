@@ -60,20 +60,6 @@ export default async function ArchivePage() {
                     ))}
                   </div>
                 )}
-
-                {(() => {
-                  const notes = [
-                    ...snap.listening.flatMap(a => a.annotation ? [a.annotation] : []),
-                    ...snap.watching.flatMap(f => f.annotation ? [f.annotation] : []),
-                  ]
-                  return notes.length > 0 ? (
-                    <div className="snap-notes">
-                      {notes.map((note, i) => (
-                        <p key={i} className="snap-note">{note}</p>
-                      ))}
-                    </div>
-                  ) : null
-                })()}
               </div>
             ))}
           </div>

@@ -266,8 +266,8 @@ a:hover {
 }
 
 .snap-cover {
-  width: 40px;
-  height: 40px;
+  width: 56px;
+  height: 56px;
   background-color: var(--border);
   background-size: cover;
   background-position: center;
@@ -276,23 +276,10 @@ a:hover {
 }
 
 .snap-film-cover {
-  width: 28px;
-  height: 42px;
+  width: 56px;
+  height: 84px;
 }
 
-.snap-notes {
-  margin-top: 0.75rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-}
-
-.snap-note {
-  font-size: 12px;
-  color: var(--muted);
-  font-style: italic;
-  line-height: 1.5;
-}
 
 /* ─── Admin ───────────────────────────────────────────────── */
 
