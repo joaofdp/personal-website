@@ -36,67 +36,44 @@ export default async function ArchivePage() {
                 )}
 
                 {snap.listening.length > 0 && (
-                  <div className="snapshot-block">
-                    <p className="snapshot-block-label">listening</p>
-                    <div className="media-list">
-                      {snap.listening.map((album, i) => (
-                        <div key={`${snap.date}-l-${i}`} className="media-item">
-                          <div
-                            className="media-cover"
-                            style={album.imageUrl ? { backgroundImage: `url(${album.imageUrl})` } : undefined}
-                          />
-                          <div className="media-info">
-                            <a
-                              href={album.url}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="media-title"
-                            >
-                              {album.name}
-                            </a>
-                            <span className="media-sub">{album.artist}</span>
-                            <span className="media-sub">{album.playcount} plays</span>
-                            {album.annotation && (
-                              <p className="media-annotation">{album.annotation}</p>
-                            )}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
+                  <div className="snap-covers">
+                    {snap.listening.map((album, i) => (
+                      <a key={`${snap.date}-l-${i}`} href={album.url} target="_blank" rel="noopener noreferrer">
+                        <div
+                          className="snap-cover"
+                          style={album.imageUrl ? { backgroundImage: `url(${album.imageUrl})` } : undefined}
+                        />
+                      </a>
+                    ))}
                   </div>
                 )}
 
                 {snap.watching.length > 0 && (
-                  <div className="snapshot-block">
-                    <p className="snapshot-block-label">watching</p>
-                    <div className="media-list">
-                      {snap.watching.map((film, i) => (
-                        <div key={`${snap.date}-w-${i}`} className="media-item">
-                          <div
-                            className="media-cover"
-                            style={film.posterUrl ? { backgroundImage: `url(${film.posterUrl})` } : undefined}
-                          />
-                          <div className="media-info">
-                            <a
-                              href={film.link}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="media-title"
-                            >
-                              {film.title}
-                            </a>
-                            {film.rating && (
-                              <span className="media-rating">{film.rating}</span>
-                            )}
-                            {film.annotation && (
-                              <p className="media-annotation">{film.annotation}</p>
-                            )}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
+                  <div className="snap-covers">
+                    {snap.watching.map((film, i) => (
+                      <a key={`${snap.date}-w-${i}`} href={film.link} target="_blank" rel="noopener noreferrer">
+                        <div
+                          className="snap-cover snap-film-cover"
+                          style={film.posterUrl ? { backgroundImage: `url(${film.posterUrl})` } : undefined}
+                        />
+                      </a>
+                    ))}
                   </div>
                 )}
+
+                {(() => {
+                  const notes = [
+                    ...snap.listening.flatMap(a => a.annotation ? [a.annotation] : []),
+                    ...snap.watching.flatMap(f => f.annotation ? [f.annotation] : []),
+                  ]
+                  return notes.length > 0 ? (
+                    <div className="snap-notes">
+                      {notes.map((note, i) => (
+                        <p key={i} className="snap-note">{note}</p>
+                      ))}
+                    </div>
+                  ) : null
+                })()}
               </div>
             ))}
           </div>
