@@ -100,6 +100,39 @@ export async function saveAnnotation(
   }
 }
 
+export async function deleteSnapshot(
+  formData: FormData
+): Promise<{ ok: boolean; error?: string }> {
+  try {
+    checkPassword(formData)
+  } catch {
+    return { ok: false, error: 'Unauthorized' }
+  }
+
+  const date = formData.get('date') as string
+  if (!date) return { ok: false, error: 'Missing date' }
+
+  try {
+    const content = await readContent()
+    const before = content.snapshots.length
+    content.snapshots = content.snapshots.filter((s) => s.date !== date)
+
+    if (content.snapshots.length === before) {
+      return { ok: false, error: 'Snapshot not found' }
+    }
+
+    await writeContent(content)
+    revalidatePath('/archive')
+    revalidatePath('/admin')
+
+    return { ok: true }
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : String(e)
+    console.error('[deleteSnapshot]', msg)
+    return { ok: false, error: msg }
+  }
+}
+
 export async function takeSnapshot(
   formData: FormData
 ): Promise<{ ok: boolean; error?: string }> {

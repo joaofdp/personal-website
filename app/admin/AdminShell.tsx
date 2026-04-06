@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useTransition } from 'react'
-import { verifyPassword, updateCurrently, saveAnnotation, takeSnapshot } from './actions'
+import { verifyPassword, updateCurrently, saveAnnotation, takeSnapshot, deleteSnapshot } from './actions'
 import type { LastFmAlbum, LetterboxdFilm, ContentSchema } from '@/lib/types'
 
 // ─── Helpers ──────────────────────────────────────────────
@@ -197,6 +197,61 @@ function AnnotationInput({
   )
 }
 
+// ─── Snapshot list ────────────────────────────────────────
+
+function SnapshotList({
+  password,
+  snapshots,
+}: {
+  password: string
+  snapshots: ContentSchema['snapshots']
+}) {
+  const sorted = [...snapshots].sort((a, b) => b.date.localeCompare(a.date))
+  const [pending, startTransition] = useTransition()
+  const [deletingDate, setDeletingDate] = useState<string | null>(null)
+
+  function handleDelete(date: string) {
+    if (!confirm(`Delete snapshot from ${date}?`)) return
+    setDeletingDate(date)
+    const fd = new FormData()
+    fd.set('password', password)
+    fd.set('date', date)
+    startTransition(async () => {
+      await deleteSnapshot(fd)
+      setDeletingDate(null)
+    })
+  }
+
+  if (sorted.length === 0) {
+    return <p className="empty-state">no snapshots yet.</p>
+  }
+
+  return (
+    <div className="snapshot-manage-list">
+      {sorted.map((snap) => (
+        <div key={snap.date} className="snapshot-manage-item">
+          <div className="snapshot-manage-info">
+            <span className="snapshot-manage-date">{snap.date}</span>
+            <span className="snapshot-manage-text">
+              {snap.currently.length > 80
+                ? snap.currently.slice(0, 80) + '...'
+                : snap.currently}
+            </span>
+          </div>
+          <button
+            type="button"
+            className="btn btn-small btn-ghost btn-delete"
+            disabled={pending && deletingDate === snap.date}
+            onClick={() => handleDelete(snap.date)}
+          >
+            {pending && deletingDate === snap.date ? '...' : 'delete'}
+          </button>
+        </div>
+      ))}
+    </div>
+  )
+}
+
 // ─── Dashboard ────────────────────────────────────────────
 
 function Dashboard({
@@ -227,6 +282,12 @@ function Dashboard({
       <div className="admin-section admin-section-snapshot">
         <h2>weekly snapshot</h2>
         <SnapshotSection password={password} />
+      </div>
+
+      {/* Manage snapshots */}
+      <div className="admin-section">
+        <h2>snapshots</h2>
+        <SnapshotList password={password} snapshots={content.snapshots} />
       </div>
 
       {/* Currently */}

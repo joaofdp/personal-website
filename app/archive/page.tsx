@@ -27,47 +27,56 @@ export default async function ArchivePage() {
           <p className="empty-state">no snapshots yet.</p>
         ) : (
           <div className="snapshot-list">
-            {snapshots.map((snap) => (
-              <div key={snap.date} className="snapshot">
-                <p className="snapshot-date">{snap.date}</p>
+            {snapshots.map((snap, idx) => {
+              // Only show films new to this snapshot (not in the previous one)
+              const prevSnap = snapshots[idx + 1] // next in array = previous chronologically
+              const prevFilmLinks = prevSnap
+                ? new Set(prevSnap.watching.map((f) => f.link))
+                : new Set<string>()
+              const newFilms = snap.watching.filter((f) => !prevFilmLinks.has(f.link))
 
-                {snap.currently && (
-                  <p className="snapshot-currently">{snap.currently}</p>
-                )}
+              return (
+                <div key={snap.date} className="snapshot">
+                  <p className="snapshot-date">{snap.date}</p>
 
-                {snap.listening.length > 0 && (
-                  <>
-                    <hr className="snap-divider" />
-                    <div className="snap-covers">
-                      {snap.listening.map((album, i) => (
-                        <a key={`${snap.date}-l-${i}`} href={album.url} target="_blank" rel="noopener noreferrer">
-                          <div
-                            className="snap-cover"
-                            style={album.imageUrl ? { backgroundImage: `url(${album.imageUrl})` } : undefined}
-                          />
-                        </a>
-                      ))}
-                    </div>
-                  </>
-                )}
+                  {snap.currently && (
+                    <p className="snapshot-currently">{snap.currently}</p>
+                  )}
 
-                {snap.watching.length > 0 && (
-                  <>
-                    <hr className="snap-divider" />
-                    <div className="snap-covers">
-                      {snap.watching.map((film, i) => (
-                        <a key={`${snap.date}-w-${i}`} href={film.link} target="_blank" rel="noopener noreferrer">
-                          <div
-                            className="snap-cover snap-film-cover"
-                            style={film.posterUrl ? { backgroundImage: `url(${film.posterUrl})` } : undefined}
-                          />
-                        </a>
-                      ))}
-                    </div>
-                  </>
-                )}
-              </div>
-            ))}
+                  {snap.listening.length > 0 && (
+                    <>
+                      <hr className="snap-divider" />
+                      <div className="snap-covers">
+                        {snap.listening.map((album, i) => (
+                          <a key={`${snap.date}-l-${i}`} href={album.url} target="_blank" rel="noopener noreferrer">
+                            <div
+                              className="snap-cover"
+                              style={album.imageUrl ? { backgroundImage: `url(${album.imageUrl})` } : undefined}
+                            />
+                          </a>
+                        ))}
+                      </div>
+                    </>
+                  )}
+
+                  {newFilms.length > 0 && (
+                    <>
+                      <hr className="snap-divider" />
+                      <div className="snap-covers">
+                        {newFilms.map((film, i) => (
+                          <a key={`${snap.date}-w-${i}`} href={film.link} target="_blank" rel="noopener noreferrer">
+                            <div
+                              className="snap-cover snap-film-cover"
+                              style={film.posterUrl ? { backgroundImage: `url(${film.posterUrl})` } : undefined}
+                            />
+                          </a>
+                        ))}
+                      </div>
+                    </>
+                  )}
+                </div>
+              )
+            })}
           </div>
         )}
       </section>
