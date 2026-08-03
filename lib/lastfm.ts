@@ -1,3 +1,4 @@
+import { withFallbackArtwork } from './deezer'
 import { LastFmAlbum } from './types'
 
 export async function getTopAlbums(): Promise<LastFmAlbum[]> {
@@ -23,7 +24,7 @@ export async function getTopAlbums(): Promise<LastFmAlbum[]> {
     const data = await res.json()
     const albums = data?.topalbums?.album ?? []
 
-    return albums.map((a: any): LastFmAlbum => {
+    const mapped = albums.map((a: any): LastFmAlbum => {
       // Last.fm returns images as [{#text: url, size: 'small'|'medium'|'large'|'extralarge'|'mega'}]
       const largeImg =
         a.image?.find((i: any) => i.size === 'extralarge')?.['#text'] ||
@@ -38,6 +39,8 @@ export async function getTopAlbums(): Promise<LastFmAlbum[]> {
         imageUrl: largeImg,
       }
     })
+
+    return withFallbackArtwork(mapped)
   } catch {
     return []
   }

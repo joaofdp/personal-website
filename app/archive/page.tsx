@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { readContent } from '@/lib/content'
+import { withFallbackArtwork } from '@/lib/deezer'
 import type { Snapshot } from '@/lib/types'
 
 export const revalidate = 0
@@ -7,8 +8,17 @@ export const revalidate = 0
 export default async function ArchivePage() {
   const content = await readContent()
 
-  const snapshots: Snapshot[] = [...(content.snapshots ?? [])].sort((a, b) =>
+  const sorted: Snapshot[] = [...(content.snapshots ?? [])].sort((a, b) =>
     b.date.localeCompare(a.date)
+  )
+
+  // Older snapshots were stored before the artwork fallback existed, so resolve
+  // any blanks on read rather than rewriting the saved data.
+  const snapshots: Snapshot[] = await Promise.all(
+    sorted.map(async (snap) => ({
+      ...snap,
+      listening: await withFallbackArtwork(snap.listening),
+    }))
   )
 
   return (
