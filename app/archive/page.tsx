@@ -2,8 +2,10 @@ import Link from 'next/link'
 import { readContent } from '@/lib/content'
 import { withFallbackArtwork } from '@/lib/deezer'
 import type { Snapshot } from '@/lib/types'
+import { publicPageMetadata } from '@/lib/seo'
 
 export const revalidate = 0
+export const metadata = publicPageMetadata('/archive')
 
 export default async function ArchivePage() {
   const content = await readContent()

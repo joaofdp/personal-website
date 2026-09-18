@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { IBM_Plex_Mono } from 'next/font/google'
+import { SITE_URL, SITE_TITLE, SITE_DESCRIPTION } from '@/lib/seo'
 import './globals.css'
 
 const ibmPlexMono = IBM_Plex_Mono({
@@ -9,16 +10,17 @@ const ibmPlexMono = IBM_Plex_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'joão passarelli',
-  description: 'designer. founder of weird fishes atelier.',
+  metadataBase: new URL(SITE_URL),
+  title: SITE_TITLE,
+  description: SITE_DESCRIPTION,
   robots: {
     index: true,
     noimageindex: true,
   },
   openGraph: {
-    title: 'joão passarelli',
-    description: 'designer. founder of weird fishes atelier.',
-    url: 'https://joaopassarelli.com',
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    url: SITE_URL,
   },
 }
 

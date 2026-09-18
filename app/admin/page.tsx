@@ -1,8 +1,12 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import { readContent } from '@/lib/content'
 import AdminShell from './AdminShell'
 
 export const dynamic = 'force-dynamic'
+export const metadata: Metadata = {
+  robots: { index: false, noimageindex: true },
+}
 
 export default async function AdminPage() {
   const content = await readContent()

@@ -3,8 +3,10 @@ import { readContent } from '@/lib/content'
 import { getTopAlbums, albumKey } from '@/lib/lastfm'
 import { getRecentFilms, filmKey } from '@/lib/letterboxd'
 import { getSpotifyAlbumUrl } from '@/lib/spotify'
+import { publicPageMetadata, profileStructuredData } from '@/lib/seo'
 
 export const dynamic = 'force-dynamic'
+export const metadata = publicPageMetadata('/')
 
 export default async function HomePage() {
   const [content, albums, films] = await Promise.all([
@@ -21,8 +23,14 @@ export default async function HomePage() {
 
   return (
     <main className="page">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(profileStructuredData).replace(/</g, '\\u003c'),
+        }}
+      />
       <header className="site-header">
-        <p className="site-name">João Passarelli</p>
+        <h1 className="site-name">João Passarelli</h1>
         <nav className="site-nav">
           <Link href="/" className="active">currents</Link>
           <Link href="/archive">archive</Link>
